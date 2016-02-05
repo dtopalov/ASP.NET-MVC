@@ -1,0 +1,27 @@
+﻿body { 
+    padding-top: 65px; 
+}
+
+#output {
+    width: 300px;
+    height: 300px;
+    border: 1px solid #e5f2f7;
+    position: absolute;
+    top: 60px;
+    left: 400px;
+    padding: 10px;
+}
+
+#btn {
+    margin-top: 15px;
+}
+
+.type-name {
+    display: inline-block;
+    width: 50%;
+}
+
+.type-value {
+    display: inline-block;
+    width: 50%;
+}

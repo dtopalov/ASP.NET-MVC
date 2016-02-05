@@ -1,0 +1,63 @@
+﻿@using MvcEssentialsHw.Models
+@model CalculatorFormViewModel
+@{
+    ViewBag.Title = "Bit Calculator";
+}
+<h2>@ViewBag.Title:</h2>
+@using (@Ajax.BeginForm("Calculator", new AjaxOptions
+                                          {
+                                              UpdateTargetId = "output",
+                                              InsertionMode = InsertionMode.ReplaceWith
+                                          }))
+{
+    <div class="form-actions no-color">
+        <h3>Quantity:</h3>
+        @Html.Kendo().NumericTextBoxFor(m => m.Quantity).Min(1).Value(Model.Quantity).Value(Model.Quantity).Spinners(true).Events(e => e.Change("postForm").Spin("postForm"))
+    </div>
+    <div class="form-actions no-color">
+        <h3>Type:</h3>
+        @Html.Kendo().DropDownListFor(m => m.Type).BindTo(new List<SelectListItem>
+            {
+               new SelectListItem { Text = "bit", Value = "1" },
+               new SelectListItem { Text = "Byte", Value = "8" },
+               new SelectListItem { Text = "kilobit", Value = "1000" },
+               new SelectListItem { Text = "Kilobyte", Value = "8000" },
+               new SelectListItem { Text = "Megabit", Value = "1000000" },
+               new SelectListItem { Text = "Megabyte", Value = "8000000" },
+               new SelectListItem { Text = "Gigabit", Value = "1000000000" },
+               new SelectListItem { Text = "Gigabyte", Value = "8000000000" },
+               new SelectListItem { Text = "Terabit", Value = "1000000000000" },
+               new SelectListItem { Text = "Terabyte", Value = "8000000000000" },
+               new SelectListItem { Text = "Petabit", Value = "1000000000000000" },
+               new SelectListItem { Text = "Petabyte", Value = "8000000000000000" }
+            }).DataValueField("Value").DataTextField("Text").Value(Model.Type).Events(e => e.Change("postForm"))
+    </div>
+    <div class="form-actions no-color">
+        <h3>Kilo:</h3>
+        @Html.Kendo().DropDownListFor(m => m.Kilo).BindTo(new List<SelectListItem> { new SelectListItem { Text = "1024", Value = "1024" }, new SelectListItem { Text = "1000", Value = "1000", Selected = true } }).DataValueField("Value").DataTextField("Text").Value(Model.Kilo).Events(e => e.Change("postForm"))
+    </div>
+    <div class="form-actions no-color">
+        @Html.Kendo().Button().Name("btn").Content("Submit").Events(e => e.Click("postForm"))
+    </div>
+}
+<div id="output">
+    @if (!this.Request.IsAjaxRequest())
+    {
+        @Html.Action("CalcPartial", Model)
+    }
+</div>
+@section scripts {
+    <script>
+        function postForm(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Calculator/Calculator",
+                method: "post",
+                data: $('#form0').serialize(),
+                success: function(response) {
+                    $('#output').html(response);
+                }
+            });
+        }
+    </script>
+}
