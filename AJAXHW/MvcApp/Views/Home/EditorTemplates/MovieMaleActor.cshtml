@@ -1,0 +1,8 @@
+@using System.Collections
+@model MvcApp.Models.MaleActorViewModel
+
+@(Html.Kendo().DropDownListFor(m => m)
+        .DataValueField("Id")
+        .DataTextField("Name")
+        .BindTo((IEnumerable)ViewData["maleActors"])
+)
